@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Real-time QR Code Display</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+        #qrcode {
+            padding: 20px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body>
+
+<div id="qrcode"></div>
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script>
+<script>
+    const socket = io();
+    const qrcodeContainer = document.getElementById('qrcode');
+
+    // 初始化一个空的二维码
+    let qrcode = new QRCode(qrcodeContainer, {
+        text: "Waiting for QR code...",
+        width: 256,
+        height: 256,
+        colorDark : "#000000",
+        colorLight : "#ffffff",
+        correctLevel : QRCode.CorrectLevel.H
+    });
+
+    // 监听来自服务器的 'new_qr_data' 事件
+    socket.on('new_qr_data', function(data) {
+        console.log('New QR data received:', data);
+        // 清除旧的二维码
+        qrcode.clear();
+        // 使用新数据生成新的二维码
+        qrcode.makeCode(data);
+    });
+</script>
+
+</body>
+</html>
