@@ -6,6 +6,11 @@
 
 > 该仓库大量内容为ai编写 请不要完全照搬
 
+## 客户端
+
+https://github.com/stmtc233/WebQR-Client
+
+
 ## 目录
 
 - [部署方式一：Node.js](#部署方式一nodejs)
